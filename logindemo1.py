@@ -16,7 +16,7 @@ def clear_fields():
     entry_pass.delete(0, tk.END)
     
 root = tk.Tk()
-root.title("Secure Login System")   
+root.title("Secure Login System Demo")   
 root.geometry("320x250")
 root.resizable(False, False)
 
