@@ -1,39 +1,56 @@
 import tkinter as tk
 from tkinter import messagebox
 
-#This is a simple login demo application using Tkinter
+# Login validation function
 def login():
     username = entry_user.get()
     password = entry_pass.get()
 
     if username == "admin" and password == "1234":
         messagebox.showinfo("Login Status", "Login Successful ✅")
+        root.destroy()  # Close window after success
     else:
-        messagebox.showerror("Login Status", "Invalid Username or Password ❌")
+        attempts_left -= 1
+        if attempts_left > 0:
+            messagebox.showerror(
+                "Login Failed",
+                f"Invalid credentials ❌\nAttempts left: {attempts_left}"
+            )
+        else:
+            messagebox.showerror(
+                "Access Denied",
+                "Too many failed attempts 🚫"
+            )
+            root.destroy()
 
-def clear_fields():
-    entry_user.delete(0, tk.END)
-    entry_pass.delete(0, tk.END)
-    
+def toggle_password():
+    if entry_pass.cget("show") == "":
+        entry_pass.config(show="*")
+        toggle_btn.config(text="Show")
+    else:
+        entry_pass.config(show="")
+        toggle_btn.config(text="Hide")
+
+# Create main window
 root = tk.Tk()
-root.title("Secure Login System Demo")   
-root.geometry("320x250")
+root.title("Login System")
+root.geometry("300x200")
 root.resizable(False, False)
 
-tk.Label(root, text="Welcome", font=("Arial", 14)).pack(pady=5)
+# Labels
 tk.Label(root, text="Login", font=("Arial", 16)).pack(pady=10)
 
-tk.Label(root, text="Username").pack()
-entry_user = tk.Entry(root)
-entry_user.pack()
+# Username
+tk.Label(root, text="Username").pack(anchor="w", padx=30)
+entry_user = tk.Entry(root, width=25)
+entry_user.pack(pady=3)
 
 tk.Label(root, text="Password").pack()
 entry_pass = tk.Entry(root, show="*")
-entry_pass.pack(pady=5)
+entry_pass.pack()
 
+# Login Button
 tk.Button(root, text="Login", command=login).pack(pady=15)
-tk.Button(root, text="Clear", command=clear_fields).pack()
 
-root.bind("<Return>", login)
-
+# Run the application
 root.mainloop()
