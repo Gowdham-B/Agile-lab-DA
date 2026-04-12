@@ -24,22 +24,40 @@ public class App {
 
 
 //Test
+package com.demo;
+
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 public class AppTest {
 
+    
     @Test
-    void testUpdate() {
+    void testValidBooking() {
         App app = new App();
-        app.updateStatus("SHIPPED");
-
-        assertEquals("SHIPPED", app.getStatus());
+        assertTrue(app.bookSeat(2));
     }
 
+    
     @Test
-    void testInvalidStatus() {
+    void testDuplicateBooking() {
         App app = new App();
-        assertFalse(app.updateStatus(""));
+
+        app.bookSeat(2); // first booking
+        assertFalse(app.bookSeat(2)); // duplicate
+    }
+
+    
+    @Test
+    void testInvalidSeatNegative() {
+        App app = new App();
+        assertFalse(app.bookSeat(-1));
+    }
+
+    
+    @Test
+    void testInvalidSeatOutOfRange() {
+        App app = new App();
+        assertFalse(app.bookSeat(10));
     }
 }
